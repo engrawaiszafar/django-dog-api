@@ -1,10 +1,13 @@
-from django.urls import path
-from .views import BreedList, BreedDetail, DogList, DogDetail
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import BreedViewSet, DogViewSet
 
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
+router.register(r'breeds', BreedViewSet, basename='breed')
+router.register(r'dogs', DogViewSet, basename='dog')
+
+# The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('breeds/', BreedList.as_view(), name='breed-list'),
-    path('breeds/<int:pk>/', BreedDetail.as_view(), name='breed-detail'),
-    path('dogs/', DogList.as_view(), name='dog-list'),
-    path('dogs/<int:pk>/', DogDetail.as_view(), name='dog-detail'),
+    path('', include(router.urls)),
 ]
-
